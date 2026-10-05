@@ -1,11 +1,11 @@
-# NaaS
+# YaaS
 
-No as a Service.
+Yes as a Service.
 
 Every request returns:
 
 ```text
-No!
+Yes!
 ```
 
 ## Requirements
@@ -18,14 +18,14 @@ No!
 Install globally from npm:
 
 ```sh
-npm install -g @ravidor/naas
+npm install -g @ravidor/yaas
 ```
 
 Or clone and run locally:
 
 ```sh
-git clone https://github.com/ravidorr/no-as-a-service.git
-cd no-as-a-service
+git clone https://github.com/ravidorr/yes-as-a-service.git
+cd yes-as-a-service
 npm install
 ```
 
@@ -38,7 +38,7 @@ npm start
 The API listens on `http://localhost:3000` by default.
 
 The UI is available at `http://localhost:3000`.
-Use `?request=` to open a shareable NaaS flow that types and submits the request automatically.
+Use `?request=` to open a shareable YaaS flow that types and submits the request automatically.
 
 Health check:
 
@@ -49,7 +49,7 @@ curl http://localhost:3000/health
 Output:
 
 ```json
-{"status":"No!","version":"0.6.2"}
+{"status":"Yes!","version":"0.6.2"}
 ```
 
 Prometheus metrics:
@@ -64,11 +64,11 @@ graceful shutdown.
 
 Custom HTTP metrics:
 
-- `naas_http_requests_total{route,method,status_code}`
-- `naas_http_request_duration_seconds{route,method,status_code}`
-- `naas_http_requests_in_flight{route,method}`
+- `yaas_http_requests_total{route,method,status_code}`
+- `yaas_http_request_duration_seconds{route,method,status_code}`
+- `yaas_http_requests_in_flight{route,method}`
 
-Route labels are normalized to `version`, `health`, `metrics`, `api_no`, or
+Route labels are normalized to `version`, `health`, `metrics`, `api_yes`, or
 `fallback`. Scrape traffic to `/metrics` is not counted in the custom HTTP
 metrics.
 
@@ -107,7 +107,7 @@ curl -X POST http://localhost:3000/anything \
 Output:
 
 ```text
-No!
+Yes!
 ```
 
 Use a different port:
@@ -116,9 +116,9 @@ Use a different port:
 PORT=8080 npm start
 ```
 
-Rate limiting applies to `/api/no` and fallback routes. Static assets,
+Rate limiting applies to `/api/yes` and fallback routes. Static assets,
 `GET /health`, and `GET /metrics` are exempt. Throttled requests return `429`
-with the body `No!`.
+with the body `Yes!`.
 
 Configure the limit with environment variables:
 
@@ -163,27 +163,27 @@ exit. A second signal during shutdown exits immediately with a non-zero status.
 Pull the published release image:
 
 ```sh
-docker pull ghcr.io/ravidorr/no-as-a-service:0.6.2
+docker pull ghcr.io/ravidorr/yes-as-a-service:0.6.2
 ```
 
 Run the container:
 
 ```sh
-docker run --rm -p 3000:3000 ghcr.io/ravidorr/no-as-a-service:0.6.2
+docker run --rm -p 3000:3000 ghcr.io/ravidorr/yes-as-a-service:0.6.2
 ```
 
 The version tag is immutable. `latest` tracks the newest release:
 
 ```sh
-docker pull ghcr.io/ravidorr/no-as-a-service:latest
-docker run --rm -p 3000:3000 ghcr.io/ravidorr/no-as-a-service:latest
+docker pull ghcr.io/ravidorr/yes-as-a-service:latest
+docker run --rm -p 3000:3000 ghcr.io/ravidorr/yes-as-a-service:latest
 ```
 
 Build the image locally:
 
 ```sh
-docker build -t naas .
-docker run --rm -p 3000:3000 naas
+docker build -t yaas .
+docker run --rm -p 3000:3000 yaas
 ```
 
 Verify the health check:
@@ -195,13 +195,13 @@ curl http://localhost:3000/health
 Inspect container health status:
 
 ```sh
-docker inspect --format='{{.State.Health.Status}}' "$(docker ps -q --filter ancestor=naas)"
+docker inspect --format='{{.State.Health.Status}}' "$(docker ps -q --filter ancestor=yaas)"
 ```
 
 Use a different port:
 
 ```sh
-docker run --rm -e PORT=8080 -p 8080:8080 naas
+docker run --rm -e PORT=8080 -p 8080:8080 yaas
 ```
 
 The image runs Node directly as PID 1 so container stop signals reach the HTTP
@@ -213,20 +213,20 @@ server. `docker stop` triggers bounded graceful draining using the same
 After a global install:
 
 ```sh
-naas anything at all
+yaas anything at all
 ```
 
 For local development:
 
 ```sh
 npm link
-naas anything at all
+yaas anything at all
 ```
 
 Output:
 
 ```text
-No!
+Yes!
 ```
 
 ## MCP
@@ -240,12 +240,12 @@ npm run mcp
 After a global install or `npm link`, MCP clients can use:
 
 ```sh
-naas-mcp
+yaas-mcp
 ```
 
 It exposes one tool:
 
-- `no`: returns `No!` and ignores all arguments.
+- `yes`: returns `Yes!` and ignores all arguments.
 
 ## Test
 

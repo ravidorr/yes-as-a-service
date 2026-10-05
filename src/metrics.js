@@ -10,7 +10,7 @@ const KNOWN_ROUTES = new Map([
   ['/version', 'version'],
   ['/health', 'health'],
   ['/metrics', 'metrics'],
-  ['/api/no', 'api_no']
+  ['/api/yes', 'api_yes']
 ]);
 
 export function normalizeRoute(path) {
@@ -22,21 +22,21 @@ export function createMetrics() {
   collectDefaultMetrics({ register: registry });
 
   const requestsTotal = new Counter({
-    name: 'naas_http_requests_total',
+    name: 'yaas_http_requests_total',
     help: 'Total number of HTTP requests handled by the service',
     labelNames: ['route', 'method', 'status_code'],
     registers: [registry]
   });
 
   const requestDurationSeconds = new Histogram({
-    name: 'naas_http_request_duration_seconds',
+    name: 'yaas_http_request_duration_seconds',
     help: 'HTTP request duration in seconds',
     labelNames: ['route', 'method', 'status_code'],
     registers: [registry]
   });
 
   const requestsInFlight = new Gauge({
-    name: 'naas_http_requests_in_flight',
+    name: 'yaas_http_requests_in_flight',
     help: 'Number of HTTP requests currently being handled',
     labelNames: ['route', 'method'],
     registers: [registry]

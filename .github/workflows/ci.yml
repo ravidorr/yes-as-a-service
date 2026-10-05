@@ -83,7 +83,7 @@ jobs:
         run: npm ci
 
       - name: Build Docker image
-        run: docker build -t naas:ci .
+        run: docker build -t yaas:ci .
 
       - name: Start service and smoke-test public endpoints
         run: |
@@ -116,15 +116,15 @@ jobs:
 
           expected_version="$(node -p "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version")"
 
-          api_no_type="$(curl --fail --silent --show-error --max-time 5 --output api-no.txt --write-out '%{content_type}' http://127.0.0.1:3000/api/no)"
-          [ "$api_no_type" = "text/plain; charset=utf-8" ]
-          [ "$(cat api-no.txt)" = "No!" ]
+          api_yes_type="$(curl --fail --silent --show-error --max-time 5 --output api-yes.txt --write-out '%{content_type}' http://127.0.0.1:3000/api/yes)"
+          [ "$api_yes_type" = "text/plain; charset=utf-8" ]
+          [ "$(cat api-yes.txt)" = "Yes!" ]
 
           health_type="$(curl --fail --silent --show-error --max-time 5 --output health.json --write-out '%{content_type}' http://127.0.0.1:3000/health)"
           [ "$health_type" = "application/json; charset=utf-8" ]
           EXPECTED_VERSION="$expected_version" node -e '
             const health = JSON.parse(require("node:fs").readFileSync("health.json", "utf8"));
-            if (health.status !== "No!" || health.version !== process.env.EXPECTED_VERSION) {
+            if (health.status !== "Yes!" || health.version !== process.env.EXPECTED_VERSION) {
               throw new Error(`Unexpected health response: ${JSON.stringify(health)}`);
             }
           '
@@ -135,4 +135,4 @@ jobs:
 
           metrics_type="$(curl --fail --silent --show-error --max-time 5 --output metrics.txt --write-out '%{content_type}' http://127.0.0.1:3000/metrics)"
           [ "$metrics_type" = "text/plain; charset=utf-8; version=0.0.4" ]
-          grep -q 'naas_http_requests_total' metrics.txt
+          grep -q 'yaas_http_requests_total' metrics.txt

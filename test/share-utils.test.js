@@ -16,7 +16,7 @@ test('buildShareUrl replaces query params with request text', () => {
 });
 
 test('buildShareText prefixes the request', () => {
-  assert.equal(buildShareText('Can I have a pony?'), 'NaaS says no to: Can I have a pony?');
+  assert.equal(buildShareText('Can I have a pony?'), 'YaaS says yes to: Can I have a pony?');
 });
 
 test('buildSocialShareLinks returns encoded provider URLs', () => {
@@ -26,6 +26,6 @@ test('buildSocialShareLinks returns encoded provider URLs', () => {
   assert.match(links.x, /^https:\/\/twitter\.com\/intent\/tweet\?/);
   assert.match(links.facebook, /^https:\/\/www\.facebook\.com\/sharer\/sharer\.php\?u=/);
   assert.match(links.linkedIn, /^https:\/\/www\.linkedin\.com\/sharing\/share-offsite\/\?url=/);
-  assert.match(links.email, /^mailto:\?subject=NaaS(%20|\+)link&body=/);
+  assert.match(links.email, /^mailto:\?subject=YaaS(%20|\+)link&body=/);
   assert.match(links.whatsApp, /^https:\/\/wa\.me\/\?text=/);
 });

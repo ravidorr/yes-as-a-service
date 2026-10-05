@@ -5,11 +5,11 @@ import { test } from 'node:test';
 
 const cliPath = resolve('src/cli.js');
 
-test('CLI returns No!', () => {
+test('CLI returns Yes!', () => {
   const result = spawnSync(process.execPath, [cliPath], { encoding: 'utf8' });
 
   assert.equal(result.status, 0);
-  assert.equal(result.stdout, 'No!\n');
+  assert.equal(result.stdout, 'Yes!\n');
   assert.equal(result.stderr, '');
 });
 
@@ -20,6 +20,6 @@ test('CLI ignores arguments and stdin', () => {
   });
 
   assert.equal(result.status, 0);
-  assert.equal(result.stdout, 'No!\n');
+  assert.equal(result.stdout, 'Yes!\n');
   assert.equal(result.stderr, '');
 });

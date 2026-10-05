@@ -15,7 +15,7 @@ test('shouldSyncPackageLock skips commits without package.json', () => {
 
 test('generatePackageLockFromManifest uses the provided manifest contents', () => {
   const manifest = JSON.stringify({
-    name: 'naas-lock-sync-test',
+    name: 'yaas-lock-sync-test',
     version: '1.0.0',
     private: true,
     scripts: {
@@ -26,5 +26,5 @@ test('generatePackageLockFromManifest uses the provided manifest contents', () =
   const lockfile = generatePackageLockFromManifest(manifest);
 
   assert.match(lockfile, /"lockfileVersion"/);
-  assert.match(lockfile, /"name": "naas-lock-sync-test"/);
+  assert.match(lockfile, /"name": "yaas-lock-sync-test"/);
 });

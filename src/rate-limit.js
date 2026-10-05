@@ -1,5 +1,5 @@
 import rateLimit from 'express-rate-limit';
-import { NO_RESPONSE } from './no.js';
+import { YES_RESPONSE } from './yes.js';
 
 export function createRateLimitMiddleware(config) {
   return rateLimit({
@@ -8,7 +8,7 @@ export function createRateLimitMiddleware(config) {
     standardHeaders: true,
     legacyHeaders: false,
     handler: (_req, res) => {
-      res.status(429).type('text/plain').send(NO_RESPONSE);
+      res.status(429).type('text/plain').send(YES_RESPONSE);
     }
   });
 }

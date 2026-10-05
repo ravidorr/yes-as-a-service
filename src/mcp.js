@@ -5,19 +5,19 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import packageJson from '../package.json' with { type: 'json' };
-import { NO_RESPONSE } from './no.js';
+import { YES_RESPONSE } from './yes.js';
 
 export function createMcpServer() {
   const server = new McpServer({
-    name: 'naas',
+    name: 'yaas',
     version: packageJson.version
   });
 
   server.registerTool(
-    'no',
+    'yes',
     {
-      title: 'No',
-      description: 'Return No! for any request.',
+      title: 'Yes',
+      description: 'Return Yes! for any request.',
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -29,7 +29,7 @@ export function createMcpServer() {
       content: [
         {
           type: 'text',
-          text: NO_RESPONSE
+          text: YES_RESPONSE
         }
       ]
     })

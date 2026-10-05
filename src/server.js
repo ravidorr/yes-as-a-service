@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import packageInfo from '../package.json' with { type: 'json' };
 import { createGracefulShutdown } from './graceful-shutdown.js';
 import { createMetrics } from './metrics.js';
-import { NO_RESPONSE } from './no.js';
+import { YES_RESPONSE } from './yes.js';
 import { createRateLimitMiddleware } from './rate-limit.js';
 import { parseRateLimitConfig, validateRateLimitConfig } from './rate-limit-config.js';
 import { parseShutdownConfig } from './shutdown-config.js';
@@ -50,7 +50,7 @@ export function createApp({
 
     const statusCode = isShuttingDown() ? 503 : 200;
 
-    res.status(statusCode).json({ status: NO_RESPONSE, version: packageInfo.version });
+    res.status(statusCode).json({ status: YES_RESPONSE, version: packageInfo.version });
   });
 
   app.all('/metrics', async (req, res, next) => {
@@ -65,12 +65,12 @@ export function createApp({
 
   app.use(createRateLimitMiddleware(resolvedRateLimitConfig));
 
-  app.all('/api/no', (req, res) => {
-    res.status(200).type('text/plain').send(NO_RESPONSE);
+  app.all('/api/yes', (req, res) => {
+    res.status(200).type('text/plain').send(YES_RESPONSE);
   });
 
   app.use((req, res) => {
-    res.status(200).type('text/plain').send(NO_RESPONSE);
+    res.status(200).type('text/plain').send(YES_RESPONSE);
   });
 
   return app;
@@ -95,7 +95,7 @@ export function startServer(
   const server = app.listen(port, () => {
     const actualPort = resolveListenPort(server.address(), port);
 
-    console.log(`NaaS listening on http://localhost:${actualPort}`);
+    console.log(`YaaS listening on http://localhost:${actualPort}`);
   });
 
   gracefulShutdownController = createGracefulShutdown({
