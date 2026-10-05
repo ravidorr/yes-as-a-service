@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 - 2026-10-05
+
+- Restore the `yaas` and `yaas-mcp` package executables by using valid npm bin
+  paths.
+
 ## 1.0.0 - 2026-10-05
 
 - Launch YaaS as the affirmative successor to NaaS: every request returns `Yes!`.
