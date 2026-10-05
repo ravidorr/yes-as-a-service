@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: YaaS API
-  version: 0.6.2
+  version: 1.0.0
   description: |
     Every unmatched path and HTTP method returns `200 text/plain` with `Yes!`.
     Static assets, `GET /version`, `GET /health`, `GET /metrics`, and `/api/yes`

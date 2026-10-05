@@ -1,6 +1,6 @@
 {
   "name": "@ravidor/yaas",
-  "version": "0.6.2",
+  "version": "1.0.0",
   "description": "Yes as a Service: every request returns Yes!",
   "license": "MIT",
   "type": "module",
