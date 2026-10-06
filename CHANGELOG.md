@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 - 2026-10-06
+
+- Deprecate YaaS in favor of [YESorNOaaS](https://github.com/ravidorr/yes-or-no-as-a-service).
+  Use `@ravidor/yesornoaas` for Yes!, No!, and random answers in one service.
+
 ## 1.0.1 - 2026-10-05
 
 - Launch YaaS as the affirmative successor to NaaS: every request returns `Yes!`.

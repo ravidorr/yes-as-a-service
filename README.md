@@ -1,5 +1,7 @@
 # YaaS
 
+> **Deprecated:** YaaS is no longer maintained. Use [YESorNOaaS](https://github.com/ravidorr/yes-or-no-as-a-service) instead: `npm install -g @ravidor/yesornoaas` for Yes!, No!, and random answers in one service.
+
 Yes as a Service.
 
 Every request returns:
