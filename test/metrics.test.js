@@ -26,7 +26,7 @@ test('normalizeRoute maps known service paths and collapses everything else', ()
   assert.equal(normalizeRoute('/version'), 'version');
   assert.equal(normalizeRoute('/health'), 'health');
   assert.equal(normalizeRoute('/metrics'), 'metrics');
-  assert.equal(normalizeRoute('/api/no'), 'api_no');
+  assert.equal(normalizeRoute('/api/yes'), 'api_yes');
   assert.equal(normalizeRoute('/anything'), 'fallback');
   assert.equal(normalizeRoute('/health/anything'), 'fallback');
 });
@@ -40,30 +40,30 @@ test('createMetrics exposes isolated registries with default and custom metric f
 
   assert.notEqual(firstText, secondText);
   assert.match(firstText, /# HELP process_cpu_user_seconds_total/);
-  assert.match(firstText, /# HELP naas_http_requests_total/);
-  assert.match(firstText, /# HELP naas_http_request_duration_seconds/);
-  assert.match(firstText, /# HELP naas_http_requests_in_flight/);
-  assert.match(secondText, /# HELP naas_http_requests_total/);
+  assert.match(firstText, /# HELP yaas_http_requests_total/);
+  assert.match(firstText, /# HELP yaas_http_request_duration_seconds/);
+  assert.match(firstText, /# HELP yaas_http_requests_in_flight/);
+  assert.match(secondText, /# HELP yaas_http_requests_total/);
 });
 
 test('middleware records normalized labels and decrements in-flight gauge on finish', async () => {
   const metrics = createMetrics();
   const { baseUrl, close } = await startApp((app) => {
     app.use(metrics.middleware);
-    app.post('/api/no', (_req, res) => {
+    app.post('/api/yes', (_req, res) => {
       res.status(201).send('created');
     });
   });
 
   try {
-    const response = await fetch(`${baseUrl}/api/no`, { method: 'POST' });
+    const response = await fetch(`${baseUrl}/api/yes`, { method: 'POST' });
     assert.equal(response.status, 201);
 
     const text = await metrics.metrics();
 
-    assert.match(text, /naas_http_requests_total\{route="api_no",method="POST",status_code="201"\} 1/);
-    assert.match(text, /naas_http_request_duration_seconds_count\{route="api_no",method="POST",status_code="201"\} 1/);
-    assert.match(text, /naas_http_requests_in_flight\{route="api_no",method="POST"\} 0/);
+    assert.match(text, /yaas_http_requests_total\{route="api_yes",method="POST",status_code="201"\} 1/);
+    assert.match(text, /yaas_http_request_duration_seconds_count\{route="api_yes",method="POST",status_code="201"\} 1/);
+    assert.match(text, /yaas_http_requests_in_flight\{route="api_yes",method="POST"\} 0/);
   } finally {
     await close();
   }
@@ -84,8 +84,8 @@ test('middleware does not observe GET /metrics scrape traffic', async () => {
 
     const text = await metrics.metrics();
 
-    assert.doesNotMatch(text, /naas_http_requests_total\{route="metrics"/);
-    assert.doesNotMatch(text, /naas_http_requests_in_flight\{route="metrics"/);
+    assert.doesNotMatch(text, /yaas_http_requests_total\{route="metrics"/);
+    assert.doesNotMatch(text, /yaas_http_requests_in_flight\{route="metrics"/);
   } finally {
     await close();
   }
@@ -104,7 +104,7 @@ test('middleware observes non-GET /metrics fallback traffic', async () => {
       next();
     });
     app.use((_req, res) => {
-      res.status(200).type('text/plain').send('No!');
+      res.status(200).type('text/plain').send('Yes!');
     });
   });
 
@@ -114,8 +114,8 @@ test('middleware observes non-GET /metrics fallback traffic', async () => {
 
     const text = await metrics.metrics();
 
-    assert.match(text, /naas_http_requests_total\{route="metrics",method="POST",status_code="200"\} 1/);
-    assert.match(text, /naas_http_requests_in_flight\{route="metrics",method="POST"\} 0/);
+    assert.match(text, /yaas_http_requests_total\{route="metrics",method="POST",status_code="200"\} 1/);
+    assert.match(text, /yaas_http_requests_in_flight\{route="metrics",method="POST"\} 0/);
   } finally {
     await close();
   }
@@ -150,7 +150,7 @@ test('middleware decrements in-flight gauge when the client disconnects early', 
 
     const text = await metrics.metrics();
 
-    assert.match(text, /naas_http_requests_in_flight\{route="fallback",method="GET"\} 0/);
+    assert.match(text, /yaas_http_requests_in_flight\{route="fallback",method="GET"\} 0/);
   } finally {
     await close();
   }
@@ -178,7 +178,7 @@ test('request close is ignored after finish already finalized metrics', async ()
 
   const text = await metrics.metrics();
 
-  assert.match(text, /naas_http_requests_total\{route="version",method="GET",status_code="200"\} 1/);
+  assert.match(text, /yaas_http_requests_total\{route="version",method="GET",status_code="200"\} 1/);
 });
 
 test('finalize runs only once across finish, response close, and request close', async () => {
@@ -186,7 +186,7 @@ test('finalize runs only once across finish, response close, and request close',
   const req = new EventEmitter();
   const res = new EventEmitter();
 
-  req.path = '/api/no';
+  req.path = '/api/yes';
   req.method = 'GET';
   res.statusCode = 200;
   Object.defineProperty(res, 'writableFinished', {
@@ -204,8 +204,8 @@ test('finalize runs only once across finish, response close, and request close',
 
   const text = await metrics.metrics();
 
-  assert.match(text, /naas_http_requests_total\{route="api_no",method="GET",status_code="200"\} 1/);
-  assert.match(text, /naas_http_requests_in_flight\{route="api_no",method="GET"\} 0/);
+  assert.match(text, /yaas_http_requests_total\{route="api_yes",method="GET",status_code="200"\} 1/);
+  assert.match(text, /yaas_http_requests_in_flight\{route="api_yes",method="GET"\} 0/);
 });
 
 test('request close uses 499 when no response status was set', async () => {
@@ -227,7 +227,7 @@ test('request close uses 499 when no response status was set', async () => {
 
   const text = await metrics.metrics();
 
-  assert.match(text, /naas_http_requests_total\{route="fallback",method="GET",status_code="499"\} 1/);
+  assert.match(text, /yaas_http_requests_total\{route="fallback",method="GET",status_code="499"\} 1/);
 });
 
 test('request close finalizes metrics when the response never finishes', async () => {
@@ -250,8 +250,8 @@ test('request close finalizes metrics when the response never finishes', async (
 
   const text = await metrics.metrics();
 
-  assert.match(text, /naas_http_requests_total\{route="fallback",method="GET",status_code="499"\} 1/);
-  assert.match(text, /naas_http_requests_in_flight\{route="fallback",method="GET"\} 0/);
+  assert.match(text, /yaas_http_requests_total\{route="fallback",method="GET",status_code="499"\} 1/);
+  assert.match(text, /yaas_http_requests_in_flight\{route="fallback",method="GET"\} 0/);
 });
 
 test('response close after finish does not double-count when writableFinished is true', async () => {
@@ -276,7 +276,7 @@ test('response close after finish does not double-count when writableFinished is
 
   const text = await metrics.metrics();
 
-  assert.match(text, /naas_http_requests_total\{route="health",method="GET",status_code="200"\} 1/);
+  assert.match(text, /yaas_http_requests_total\{route="health",method="GET",status_code="200"\} 1/);
 });
 
 test('middleware normalizes unmatched paths to fallback', async () => {
@@ -284,7 +284,7 @@ test('middleware normalizes unmatched paths to fallback', async () => {
   const { baseUrl, close } = await startApp((app) => {
     app.use(metrics.middleware);
     app.use((_req, res) => {
-      res.status(200).type('text/plain').send('No!');
+      res.status(200).type('text/plain').send('Yes!');
     });
   });
 
@@ -293,7 +293,7 @@ test('middleware normalizes unmatched paths to fallback', async () => {
 
     const text = await metrics.metrics();
 
-    assert.match(text, /naas_http_requests_total\{route="fallback",method="GET",status_code="200"\} 1/);
+    assert.match(text, /yaas_http_requests_total\{route="fallback",method="GET",status_code="200"\} 1/);
   } finally {
     await close();
   }

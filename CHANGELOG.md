@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1 - 2026-10-05
+
+- Launch YaaS as the affirmative successor to NaaS: every request returns `Yes!`.
+- Rename the API route, package, CLI, MCP tool, Prometheus metrics, UI, documentation, and CI configuration to YaaS.
+- Restore the `yaas` and `yaas-mcp` package executables by using valid npm bin
+  paths.
+
+## 1.0.0 - 2026-10-05
+
+- Launch YaaS as the affirmative successor to NaaS: every request returns `Yes!`.
+- Rename the API route, package, CLI, MCP tool, Prometheus metrics, UI, documentation, and CI configuration to YaaS.
+
 ## 0.6.2 - 2026-10-01
 
 - Require `npm run lint` in the Husky pre-commit hook before coverage checks.

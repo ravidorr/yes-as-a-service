@@ -5,7 +5,7 @@ import {
   copyShareLink,
   readRequestParam,
   REQUEST_TIMEOUT_MS,
-  submitNoRequest,
+  submitYesRequest,
   TYPE_DELAY_MS
 } from '../public/app-behavior.js';
 
@@ -26,7 +26,7 @@ test('readRequestParam returns the request query value', () => {
   assert.equal(readRequestParam(''), null);
 });
 
-test('submitNoRequest shows the response on success', async () => {
+test('submitYesRequest shows the response on success', async () => {
   const localThis = {
     submittedText: 'Can I?',
     current: true,
@@ -34,7 +34,7 @@ test('submitNoRequest shows the response on success', async () => {
     fetchCalls: []
   };
 
-  await submitNoRequest({
+  await submitYesRequest({
     submittedText: localThis.submittedText,
     isCurrentRequest: () => localThis.current,
     fetch: async (url, options) => {
@@ -43,7 +43,7 @@ test('submitNoRequest shows the response on success', async () => {
       return {
         ok: true,
         async text() {
-          return 'No!';
+          return 'Yes!';
         }
       };
     },
@@ -61,19 +61,19 @@ test('submitNoRequest shows the response on success', async () => {
     }
   });
 
-  assert.equal(localThis.successText, 'No!');
+  assert.equal(localThis.successText, 'Yes!');
   assert.equal(localThis.fetchCalls.length, 1);
-  assert.equal(localThis.fetchCalls[0].url, '/api/no');
+  assert.equal(localThis.fetchCalls[0].url, '/api/yes');
   assert.deepEqual(JSON.parse(localThis.fetchCalls[0].options.body), { text: 'Can I?' });
 });
 
-test('submitNoRequest shows unavailable when fetch fails', async () => {
+test('submitYesRequest shows unavailable when fetch fails', async () => {
   const localThis = {
     current: true,
     unavailable: false
   };
 
-  await submitNoRequest({
+  await submitYesRequest({
     submittedText: 'Can I?',
     isCurrentRequest: () => localThis.current,
     fetch: async () => {
@@ -92,7 +92,7 @@ test('submitNoRequest shows unavailable when fetch fails', async () => {
   assert.equal(localThis.unavailable, true);
 });
 
-test('submitNoRequest shows timeout when the request aborts after the deadline', async () => {
+test('submitYesRequest shows timeout when the request aborts after the deadline', async () => {
   const localThis = {
     current: true,
     timedOut: false,
@@ -100,7 +100,7 @@ test('submitNoRequest shows timeout when the request aborts after the deadline',
     timeoutCallback: null
   };
 
-  const submitPromise = submitNoRequest({
+  const submitPromise = submitYesRequest({
     submittedText: 'Can I?',
     isCurrentRequest: () => localThis.current,
     fetch: (_url, options) =>
@@ -134,7 +134,7 @@ test('submitNoRequest shows timeout when the request aborts after the deadline',
   assert.equal(localThis.timedOut, true);
 });
 
-test('submitNoRequest ignores aborts that are not caused by timeout', async () => {
+test('submitYesRequest ignores aborts that are not caused by timeout', async () => {
   const localThis = {
     current: true,
     timedOut: false,
@@ -142,7 +142,7 @@ test('submitNoRequest ignores aborts that are not caused by timeout', async () =
     controller: null
   };
 
-  await submitNoRequest({
+  await submitYesRequest({
     submittedText: 'Can I?',
     isCurrentRequest: () => localThis.current,
     fetch: async (_url, options) => {
@@ -170,20 +170,20 @@ test('submitNoRequest ignores aborts that are not caused by timeout', async () =
   assert.equal(localThis.unavailable, false);
 });
 
-test('submitNoRequest skips stale responses when the request is no longer current', async () => {
+test('submitYesRequest skips stale responses when the request is no longer current', async () => {
   const localThis = {
     current: false,
     successText: null,
     unavailable: false
   };
 
-  await submitNoRequest({
+  await submitYesRequest({
     submittedText: 'Can I?',
     isCurrentRequest: () => localThis.current,
     fetch: async () => ({
       ok: true,
       async text() {
-        return 'No!';
+        return 'Yes!';
       }
     }),
     AbortController: MockAbortController,
@@ -265,7 +265,7 @@ test('autoplayRequest types each character, notifies input, and submits', async 
   };
 
   await autoplayRequest({
-    text: 'No?',
+    text: 'Yes?',
     clearInput: () => {
       localThis.value = '';
     },
@@ -284,8 +284,8 @@ test('autoplayRequest types each character, notifies input, and submits', async 
     delayMs: TYPE_DELAY_MS
   });
 
-  assert.equal(localThis.value, 'No?');
-  assert.equal(localThis.inputEvents, 3);
-  assert.deepEqual(localThis.waits, [TYPE_DELAY_MS, TYPE_DELAY_MS, TYPE_DELAY_MS]);
+  assert.equal(localThis.value, 'Yes?');
+  assert.equal(localThis.inputEvents, 4);
+  assert.deepEqual(localThis.waits, [TYPE_DELAY_MS, TYPE_DELAY_MS, TYPE_DELAY_MS, TYPE_DELAY_MS]);
   assert.equal(localThis.submitted, true);
 });

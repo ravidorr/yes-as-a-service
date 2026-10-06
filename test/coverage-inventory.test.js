@@ -12,12 +12,12 @@ test('listSourceFiles discovers every src module', () => {
     'graceful-shutdown.js',
     'mcp.js',
     'metrics.js',
-    'no.js',
     'rate-limit-config.js',
     'rate-limit.js',
     'server.js',
     'shutdown-config.js',
-    'trust-proxy-config.js'
+    'trust-proxy-config.js',
+    'yes.js'
   ]);
 });
 
@@ -78,10 +78,10 @@ test('findCoverageInventoryMismatches flags src files missing from coverage', ()
   const { missingFiles, unexpectedFiles } = findCoverageInventoryMismatches(output, [
     'cli.js',
     'mcp.js',
-    'no.js',
-    'server.js'
+    'server.js',
+    'yes.js'
   ]);
 
-  assert.deepEqual(missingFiles, ['no.js', 'server.js']);
+  assert.deepEqual(missingFiles, ['server.js', 'yes.js']);
   assert.deepEqual(unexpectedFiles, []);
 });

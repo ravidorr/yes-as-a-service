@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import { NO_RESPONSE } from './no.js';
+import { YES_RESPONSE } from './yes.js';
 
-process.stdout.write(`${NO_RESPONSE}\n`);
+process.stdout.write(`${YES_RESPONSE}\n`);

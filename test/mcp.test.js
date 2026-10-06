@@ -16,9 +16,9 @@ import {
 
 const mcpServerPath = resolve('src/mcp.js');
 
-test('MCP server exposes a no tool', async () => {
+test('MCP server exposes a yes tool', async () => {
   const client = new Client({
-    name: 'naas-test-client',
+    name: 'yaas-test-client',
     version: '0.0.0'
   });
   const transport = new StdioClientTransport({
@@ -32,25 +32,25 @@ test('MCP server exposes a no tool', async () => {
     await client.connect(transport);
 
     assert.deepEqual(client.getServerVersion(), {
-      name: 'naas',
+      name: 'yaas',
       version: packageJson.version
     });
 
     const tools = await client.listTools();
     assert.deepEqual(
       tools.tools.map((tool) => tool.name),
-      ['no']
+      ['yes']
     );
 
     const result = await client.callTool({
-      name: 'no',
+      name: 'yes',
       arguments: {
         question: 'Can I?',
         payload: { any: 'thing' }
       }
     });
 
-    assert.deepEqual(result.content, [{ type: 'text', text: 'No!' }]);
+    assert.deepEqual(result.content, [{ type: 'text', text: 'Yes!' }]);
   } finally {
     await client.close();
   }

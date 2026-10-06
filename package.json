@@ -1,24 +1,24 @@
 {
-  "name": "@ravidor/naas",
-  "version": "0.6.2",
-  "description": "No as a Service: every request returns No!",
+  "name": "@ravidor/yaas",
+  "version": "1.0.1",
+  "description": "Yes as a Service: every request returns Yes!",
   "license": "MIT",
   "type": "module",
   "main": "src/server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ravidorr/no-as-a-service.git"
+    "url": "git+https://github.com/ravidorr/yes-as-a-service.git"
   },
   "bugs": {
-    "url": "https://github.com/ravidorr/no-as-a-service/issues"
+    "url": "https://github.com/ravidorr/yes-as-a-service/issues"
   },
-  "homepage": "https://github.com/ravidorr/no-as-a-service#readme",
+  "homepage": "https://github.com/ravidorr/yes-as-a-service#readme",
   "keywords": [
-    "naas",
+    "yaas",
     "mcp",
     "cli",
     "express",
-    "no"
+    "yes"
   ],
   "files": [
     "src/",
@@ -31,8 +31,8 @@
     "access": "public"
   },
   "bin": {
-    "naas": "./src/cli.js",
-    "naas-mcp": "./src/mcp.js"
+    "yaas": "src/cli.js",
+    "yaas-mcp": "src/mcp.js"
   },
   "scripts": {
     "mcp": "node src/mcp.js",

@@ -2,11 +2,11 @@ import {
   autoplayRequest,
   copyShareLink,
   readRequestParam,
-  submitNoRequest
+  submitYesRequest
 } from './app-behavior.js';
 import { buildShareUrl, buildSocialShareLinks } from './share-utils.js';
 
-const form = document.querySelector('#naas-form');
+const form = document.querySelector('#yaas-form');
 const input = document.querySelector('#request-text');
 const submitButton = document.querySelector('#submit-button');
 const statusRow = document.querySelector('#status-row');
@@ -212,7 +212,7 @@ form.addEventListener('submit', async (event) => {
   clearStatus();
   hideResult();
 
-  await submitNoRequest({
+  await submitYesRequest({
     submittedText,
     isCurrentRequest: () => token === requestToken && input.value === submittedText && hasText(),
     fetch: fetch.bind(globalThis),
@@ -220,8 +220,8 @@ form.addEventListener('submit', async (event) => {
       currentController = controller;
     },
     onSuccess: showResult,
-    onTimeout: () => showError('NaaS timed out. Try again.'),
-    onUnavailable: () => showError('NaaS is unavailable. Try again.')
+    onTimeout: () => showError('YaaS timed out. Try again.'),
+    onUnavailable: () => showError('YaaS is unavailable. Try again.')
   });
 
   if (token === requestToken) {

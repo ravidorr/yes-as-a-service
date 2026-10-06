@@ -2,7 +2,7 @@
 
 ## Getting help
 
-Support for NaaS is provided through [GitHub issues](https://github.com/ravidorr/no-as-a-service/issues).
+Support for YaaS is provided through [GitHub issues](https://github.com/ravidorr/yes-as-a-service/issues).
 
 Use issues for:
 

@@ -19,22 +19,22 @@ async function startServer(app) {
   };
 }
 
-test('throttles /api/no after the configured limit is exceeded', async () => {
+test('throttles /api/yes after the configured limit is exceeded', async () => {
   const { baseUrl, close } = await startServer(createApp({ rateLimitConfig: strictRateLimitConfig }));
 
   try {
     for (let index = 0; index < strictRateLimitConfig.max; index += 1) {
-      const response = await fetch(`${baseUrl}/api/no`);
+      const response = await fetch(`${baseUrl}/api/yes`);
 
       assert.equal(response.status, 200);
-      assert.equal(await response.text(), 'No!');
+      assert.equal(await response.text(), 'Yes!');
     }
 
-    const throttled = await fetch(`${baseUrl}/api/no`);
+    const throttled = await fetch(`${baseUrl}/api/yes`);
 
     assert.equal(throttled.status, 429);
     assert.equal(throttled.headers.get('content-type'), 'text/plain; charset=utf-8');
-    assert.equal(await throttled.text(), 'No!');
+    assert.equal(await throttled.text(), 'Yes!');
   } finally {
     await close();
   }
@@ -48,13 +48,13 @@ test('throttles fallback routes after the configured limit is exceeded', async (
       const response = await fetch(`${baseUrl}/anything-${index}`);
 
       assert.equal(response.status, 200);
-      assert.equal(await response.text(), 'No!');
+      assert.equal(await response.text(), 'Yes!');
     }
 
     const throttled = await fetch(`${baseUrl}/anything-else`);
 
     assert.equal(throttled.status, 429);
-    assert.equal(await throttled.text(), 'No!');
+    assert.equal(await throttled.text(), 'Yes!');
   } finally {
     await close();
   }
@@ -91,8 +91,8 @@ test('does not throttle GET /metrics even after the configured limit is exhauste
   const { baseUrl, close } = await startServer(createApp({ rateLimitConfig: { windowMs: 60_000, max: 1 } }));
 
   try {
-    await fetch(`${baseUrl}/api/no`);
-    const throttled = await fetch(`${baseUrl}/api/no`);
+    await fetch(`${baseUrl}/api/yes`);
+    const throttled = await fetch(`${baseUrl}/api/yes`);
     assert.equal(throttled.status, 429);
 
     const metrics = await fetch(`${baseUrl}/metrics`);
@@ -112,7 +112,7 @@ test('rate limits non-GET /health requests through the fallback', async () => {
 
     const throttled = await fetch(`${baseUrl}/health`, { method: 'POST' });
     assert.equal(throttled.status, 429);
-    assert.equal(await throttled.text(), 'No!');
+    assert.equal(await throttled.text(), 'Yes!');
   } finally {
     await close();
   }
@@ -127,7 +127,7 @@ test('rate limits non-GET /version requests through the fallback', async () => {
 
     const throttled = await fetch(`${baseUrl}/version`, { method: 'POST' });
     assert.equal(throttled.status, 429);
-    assert.equal(await throttled.text(), 'No!');
+    assert.equal(await throttled.text(), 'Yes!');
   } finally {
     await close();
   }
@@ -137,15 +137,15 @@ test('returns modern rate-limit headers without legacy headers', async () => {
   const { baseUrl, close } = await startServer(createApp({ rateLimitConfig: strictRateLimitConfig }));
 
   try {
-    const allowed = await fetch(`${baseUrl}/api/no`);
+    const allowed = await fetch(`${baseUrl}/api/yes`);
     assert.equal(allowed.status, 200);
     assert.ok(allowed.headers.get('ratelimit-limit'));
     assert.ok(allowed.headers.get('ratelimit-remaining'));
     assert.ok(allowed.headers.get('ratelimit-reset'));
     assert.equal(allowed.headers.get('x-ratelimit-limit'), null);
 
-    await fetch(`${baseUrl}/api/no`);
-    const throttled = await fetch(`${baseUrl}/api/no`);
+    await fetch(`${baseUrl}/api/yes`);
+    const throttled = await fetch(`${baseUrl}/api/yes`);
 
     assert.equal(throttled.status, 429);
     assert.ok(throttled.headers.get('retry-after'));
@@ -163,13 +163,13 @@ test('tracks clients separately when proxy trust and forwarded headers differ', 
   const { baseUrl, close } = await startServer(app);
 
   try {
-    const firstClient = await fetch(`${baseUrl}/api/no`, {
+    const firstClient = await fetch(`${baseUrl}/api/yes`, {
       headers: { 'x-forwarded-for': '203.0.113.1' }
     });
-    const firstClientAgain = await fetch(`${baseUrl}/api/no`, {
+    const firstClientAgain = await fetch(`${baseUrl}/api/yes`, {
       headers: { 'x-forwarded-for': '203.0.113.1' }
     });
-    const secondClient = await fetch(`${baseUrl}/api/no`, {
+    const secondClient = await fetch(`${baseUrl}/api/yes`, {
       headers: { 'x-forwarded-for': '203.0.113.2' }
     });
 
@@ -187,15 +187,15 @@ test('allows requests again after the configured window elapses', async () => {
   );
 
   try {
-    const first = await fetch(`${baseUrl}/api/no`);
+    const first = await fetch(`${baseUrl}/api/yes`);
     assert.equal(first.status, 200);
 
-    const throttled = await fetch(`${baseUrl}/api/no`);
+    const throttled = await fetch(`${baseUrl}/api/yes`);
     assert.equal(throttled.status, 429);
 
     await new Promise((resolve) => setTimeout(resolve, 150));
 
-    const afterWindow = await fetch(`${baseUrl}/api/no`);
+    const afterWindow = await fetch(`${baseUrl}/api/yes`);
     assert.equal(afterWindow.status, 200);
   } finally {
     await close();

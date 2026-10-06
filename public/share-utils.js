@@ -7,7 +7,7 @@ export function buildShareUrl(baseHref, text) {
 }
 
 export function buildShareText(text) {
-  return `NaaS says no to: ${text}`;
+  return `YaaS says yes to: ${text}`;
 }
 
 export function buildSocialShareLinks(baseHref, text) {
@@ -22,7 +22,7 @@ export function buildSocialShareLinks(baseHref, text) {
     x: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     linkedIn: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    email: `mailto:?subject=${encodeURIComponent('NaaS link')}&body=${encodedEmailBody}`,
+    email: `mailto:?subject=${encodeURIComponent('YaaS link')}&body=${encodedEmailBody}`,
     whatsApp: `https://wa.me/?text=${encodeURIComponent(`${shareText} ${url}`)}`
   };
 }

@@ -108,7 +108,7 @@ test('shouldValidateReleaseNotes skips workflow-only changes', () => {
 });
 
 test('readChangedFilesSince includes both paths for a rename into workflows', () => {
-  const repositoryPath = mkdtempSync(join(tmpdir(), 'naas-release-notes-'));
+  const repositoryPath = mkdtempSync(join(tmpdir(), 'yaas-release-notes-'));
   const runGit = (...args) =>
     execFileSync('git', args, { cwd: repositoryPath, encoding: 'utf8' });
 
@@ -140,7 +140,7 @@ test('readChangedFilesSince includes both paths for a rename into workflows', ()
 });
 
 test('readChangedFilesSince skips a rename within workflows', () => {
-  const repositoryPath = mkdtempSync(join(tmpdir(), 'naas-release-notes-'));
+  const repositoryPath = mkdtempSync(join(tmpdir(), 'yaas-release-notes-'));
   const runGit = (...args) =>
     execFileSync('git', args, { cwd: repositoryPath, encoding: 'utf8' });
 

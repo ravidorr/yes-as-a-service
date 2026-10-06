@@ -13,7 +13,7 @@ Security fixes are applied to the latest release on `main`.
 
 Please do not open a public GitHub issue for security reports.
 
-Report vulnerabilities privately through [GitHub Security Advisories](https://github.com/ravidorr/no-as-a-service/security/advisories/new) or by opening a private security contact through GitHub if that option is unavailable.
+Report vulnerabilities privately through [GitHub Security Advisories](https://github.com/ravidorr/yes-as-a-service/security/advisories/new) or by opening a private security contact through GitHub if that option is unavailable.
 
 Include:
 
@@ -28,7 +28,7 @@ Maintainers will acknowledge valid reports as soon as possible and work on a fix
 
 ## Scope notes
 
-NaaS is a small service that returns plain text responses. Reports about intentional behavior such as "every request returns `No!`" are out of scope unless they expose an unintended security issue.
+YaaS is a small service that returns plain text responses. Reports about intentional behavior such as "every request returns `Yes!`" are out of scope unless they expose an unintended security issue.
 
 ## Deployment guidance
 
@@ -39,7 +39,7 @@ such as CPU, memory, heap, garbage collection, and HTTP traffic patterns. That
 is appropriate for internal Prometheus scraping, but risky on the public internet
 without network controls.
 
-When exposing NaaS beyond a trusted network:
+When exposing YaaS beyond a trusted network:
 
 - Bind the service to an internal interface or private network.
 - Restrict `/metrics` at a reverse proxy or ingress (ACL, IP allowlist, or

@@ -5,7 +5,7 @@ export function readRequestParam(search) {
   return new URLSearchParams(search).get('request');
 }
 
-export async function submitNoRequest({
+export async function submitYesRequest({
   submittedText,
   isCurrentRequest,
   fetch: fetchFn,
@@ -29,7 +29,7 @@ export async function submitNoRequest({
   }, timeoutMs);
 
   try {
-    const result = await fetchFn('/api/no', {
+    const result = await fetchFn('/api/yes', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
