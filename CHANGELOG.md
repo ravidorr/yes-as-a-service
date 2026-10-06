@@ -2,6 +2,8 @@
 
 ## 1.0.1 - 2026-10-05
 
+- Launch YaaS as the affirmative successor to NaaS: every request returns `Yes!`.
+- Rename the API route, package, CLI, MCP tool, Prometheus metrics, UI, documentation, and CI configuration to YaaS.
 - Restore the `yaas` and `yaas-mcp` package executables by using valid npm bin
   paths.
 
@@ -28,7 +30,7 @@
 - Extract frontend request, clipboard, and autoplay behavior to
   `public/app-behavior.js` with unit tests.
 - Add ESLint, html-validate, and markdownlint-cli2.
-- Clarify PRIVACY.md: YaaS does not track users; operators may scrape
+- Clarify PRIVACY.md: NaaS does not track users; operators may scrape
   operational metrics.
 - Fix ROADMAP and CONTRIBUTING drift; include `scripts/prepare-husky.mjs` in the
   published npm package.
@@ -44,13 +46,13 @@
 ## 0.5.0 - 2026-10-01
 
 - Publish the production Docker image to GHCR on release as
-  `ghcr.io/ravidorr/yes-as-a-service`, tagged with the package version and
+  `ghcr.io/ravidorr/no-as-a-service`, tagged with the package version and
   `latest`.
 - Document GHCR pull and run commands in the README.
 
 ## 0.4.1 - 2026-10-01
 
-- Add CI smoke checks for `/api/yes`, `/health`, and `/version`.
+- Add CI smoke checks for `/api/no`, `/health`, and `/version`.
 - Sync OpenAPI and README version examples with the package release.
 
 ## 0.4.0 - 2026-10-01
@@ -68,7 +70,7 @@
 ## 0.3.0 - 2026-10-01
 
 - Add IP-keyed HTTP rate limiting with env-configured limits, modern rate-limit
-  headers, and `429` responses that return `Yes!`.
+  headers, and `429` responses that return `No!`.
 - Exempt static assets and `GET /health` from rate limiting.
 - Document rate-limit configuration in README and OpenAPI.
 
@@ -78,11 +80,11 @@
 
 ## 0.2.6 - 2026-10-01
 
-- Publish an OpenAPI specification at `GET /openapi.yaml` for health, `/api/yes`, and fallback behavior.
+- Publish an OpenAPI specification at `GET /openapi.yaml` for health, `/api/no`, and fallback behavior.
 
 ## 0.2.5 - 2026-10-01
 
-- Add `GET /health`, returning JSON YaaS status and the package version.
+- Add `GET /health`, returning JSON NaaS status and the package version.
 
 ## 0.2.4 - 2026-10-01
 
@@ -91,7 +93,7 @@
 
 ## 0.2.3 - 2026-10-01
 
-- Publish as `@ravidor/yaas` to match the npm account scope (GitHub org/user remains `ravidorr`).
+- Publish as `@ravidor/naas` to match the npm account scope (GitHub org/user remains `ravidorr`).
 - Parse Node.js 24 info-prefixed coverage reports in the inventory check.
 - Run coverage explicitly in the release workflow before publishing without lifecycle scripts.
 
@@ -105,7 +107,7 @@
 
 ## 0.2.0 - 2026-10-01
 
-- Publish the package to npm as `@ravidor/yaas` with global `yaas` and `yaas-mcp` binaries.
+- Publish the package to npm as `@ravidor/naas` with global `naas` and `naas-mcp` binaries.
 - Automate GitHub Releases and npm publish when a version bump lands on `main`.
 - Split release-notes verification into its own required CI job for pull requests and pushes.
 - Add Dependabot updates for npm dependencies and GitHub Actions.
@@ -123,16 +125,16 @@
 
 ## 0.1.0 - 2026-05-10
 
-- Initial YaaS API.
-- Return `Yes!` as plain text for any request path, method, or payload.
-- Add `yaas` CLI that returns `Yes!`.
-- Add `yaas-mcp` stdio MCP server with a `yes` tool.
+- Initial NaaS API.
+- Return `No!` as plain text for any request path, method, or payload.
+- Add `naas` CLI that returns `No!`.
+- Add `naas-mcp` stdio MCP server with a `no` tool.
 - Add vanilla HTML, CSS, and JavaScript UI.
 - Clear the UI response when the request input is cleared.
 - Add UI timeout/error handling for stuck or failed requests.
-- Add shareable YaaS links that autoplay a request and response.
+- Add shareable NaaS links that autoplay a request and response.
 - Move the share link below the response and explain what it does.
-- Reveal sharing controls only after a successful YaaS reply and add Preview.
+- Reveal sharing controls only after a successful NaaS reply and add Preview.
 - Clarify the request field label and primary action copy.
 - Rename the share action to `Copy link`.
 - Rename `Preview` to `Preview link`.
