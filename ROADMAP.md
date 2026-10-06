@@ -1,5 +1,7 @@
 # YaaS roadmap
 
+**Deprecated.** YaaS is superseded by [YESorNOaaS](https://github.com/ravidorr/yes-or-no-as-a-service). New work happens there.
+
 Living plan for [yes-as-a-service](https://github.com/ravidorr/yes-as-a-service). Update this file when scope or priorities change.
 
 **Current release:** [`@ravidor/yaas`](https://www.npmjs.com/package/@ravidor/yaas) — version on `main` lives in [`package.json`](./package.json); tags and notes on [GitHub Releases](https://github.com/ravidorr/yes-as-a-service/releases).
